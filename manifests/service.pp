@@ -42,6 +42,10 @@
 #      ]
 #    }
 #
+# [*leader_election*]
+#  Whether leader_election should be enabled for this service
+#  Must be a boolean.
+#
 # [*ensure*]
 #  Controls if the file is present or absent.
 #
@@ -52,6 +56,7 @@ define synapse::service (
   $default_servers,
   $discovery,
   $haproxy,
+  $leader_election = false,
   $ensure = 'present',
   $target = "/etc/synapse/conf.d/${name}.json",
 ) {
@@ -60,6 +65,7 @@ define synapse::service (
   validate_array($default_servers)
   validate_hash($discovery)
   validate_hash($haproxy)
+  validate_boolean($leader_election)
   validate_absolute_path($target)
 
   file { $target:
